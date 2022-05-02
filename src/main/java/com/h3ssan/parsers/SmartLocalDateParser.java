@@ -1,5 +1,7 @@
 package com.h3ssan.parsers;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +26,7 @@ public class SmartLocalDateParser {
      * @param date String represents the date that will be converted into LocalDate
      * @throws DateTimeException
      */
-    public SmartLocalDateParser(String date) throws DateTimeException {
+    public SmartLocalDateParser(@NotNull String date) throws DateTimeException {
         this.date = preProcessing(date);
 
         this.delimiter = extractDelimiter();
@@ -41,7 +43,7 @@ public class SmartLocalDateParser {
      * @return       a Cleaned String date which is the final modification of the date
      * @see          String
      */
-    private String preProcessing(String date) {
+    private String preProcessing(@NotNull String date) {
         if (Pattern.compile("[٠١٢٣٤٥٦٧٨٩]").matcher(date).find())
             return replaceArabicNumbers(date);
 
@@ -55,7 +57,7 @@ public class SmartLocalDateParser {
      * @return       String date which all numbers in English
      * @see          String
      */
-    private String replaceArabicNumbers(String date) {
+    private String replaceArabicNumbers(@NotNull String date) {
         List<String> arabicNumbers = new ArrayList<>(Arrays.asList("٠", "١", "٢", "٣" ,"٤", "٥", "٦", "٧", "٨", "٩"));
         List<String> englishNumbers = new ArrayList<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
@@ -74,7 +76,7 @@ public class SmartLocalDateParser {
      * @return boolean represents whatever the pattern matched or not
      * @see Pattern
      */
-    private boolean expressionMatch(Pattern pattern) {
+    private boolean expressionMatch(@NotNull Pattern pattern) {
         return pattern.matcher(this.date).matches();
     }
 
