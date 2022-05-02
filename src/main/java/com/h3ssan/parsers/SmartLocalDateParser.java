@@ -3,6 +3,7 @@ package com.h3ssan.parsers;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,8 @@ public class SmartLocalDateParser {
     private final String date;
 
     private final String delimiter;
+
+    private int year, month, day;
 
     /**
      * Possible delimiters that maybe used in the date, and SmartLocalDateParser
@@ -33,6 +36,18 @@ public class SmartLocalDateParser {
         if (this.delimiter == null)
             throw new DateTimeException("Invalid date format, should be in yyyy-mm-dd OR dd-mm-yyyy format");
 
+        extractYearMonthAndDay();
+    }
+
+    /**
+     * Used to convert year, month and day variables into the LocalDate and return it
+     *
+     * @return LocalDate which is the final journey in our class and
+     * what we need
+     * @throws DateTimeException if year, month or day invalid number
+     */
+    public LocalDate getLocalDate() throws DateTimeException {
+        return LocalDate.of(year, month, day);
     }
 
     /**
@@ -102,5 +117,25 @@ public class SmartLocalDateParser {
         }
 
         return null;
+    }
+
+    /**
+     * Method that used to extract year, month and day from the date String
+     * into the final variables in the class scope
+     */
+    private void extractYearMonthAndDay() {
+        String[] temp = date.split(delimiter);
+
+        // Month is always in the middle
+        this.month = Integer.parseInt(temp[1]);
+
+        // The rest, year and day.
+        if (temp[0].length() == 4) {
+            this.year = Integer.parseInt(temp[0]);
+            this.day = Integer.parseInt(temp[2]);
+        } else {
+            this.year = Integer.parseInt(temp[2]);
+            this.day = Integer.parseInt(temp[0]);
+        }
     }
 }
